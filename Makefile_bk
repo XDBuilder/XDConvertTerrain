@@ -1,0 +1,415 @@
+INC_ROOT = /home/hadoop/project/jsyun/kafka/XDConvertImage
+INC_PROJ = $(INC_ROOT)/proj
+#라이브러리 헤러파일과 라이브러리 파일 위치 확인
+#CFLAGS=-Wall $(shell pkg-config --cflags glib-2.0 rdkafka)
+#LDLIBS=$(shell pkg-config --libs glib-2.0 rdkafka)
+
+CFLAGS=-I/usr/include/glib-2.0 -I/usr/lib/x86_64-linux-gnu/glib-2.0/include -I/usr/include -I$(INC_PROJ)
+LDLIBS=-lglib-2.0 -lrdkafka -lpthread
+
+
+CC = g++
+COMPLGCC = $(CC) -Wall -std=c++17 -fpermissive -O2 -Wunused-function -Wno-unused-result $(CFLAGS) -c $<
+
+OBJS_MAIN = XDConvertImage.o common.o
+OBJS_PROJ = aasincos.o PJ_bipc.o PJ_eck5.o PJ_gn_sinu.o PJ_larr.o pj_msfn.o PJ_putp2.o PJ_tcea.o \
+	adjlon.o PJ_boggs.o pj_ellps.o PJ_goode.o PJ_lask.o pj_mutex.o PJ_putp3.o PJ_times.o \
+	bch2bps.o PJ_bonne.o pj_ell_set.o pj_gridcatalog.o pj_latlong.o PJ_natearth2.o PJ_putp4p.o PJ_tmerc.o \
+	bchgen.o mk_cheby.o PJ_calcofi.o PJ_eqc.o pj_gridinfo.o PJ_lcca.o PJ_natearth.o PJ_putp5.o PJ_tpeqd.o \
+	biveval.o PJ_cass.o PJ_eqdc.o pj_gridlist.o PJ_lcc.o PJ_nell.o PJ_putp6.o pj_transform.o proj_etmerc.o \
+	PJ_cc.o pj_errno.o PJ_gstmerc.o PJ_nell_h.o PJ_qsc.o pj_tsfn.o proj_mdist.o \
+	dmstor.o nad_cvt.o PJ_cea.o pj_factors.o PJ_hammer.o PJ_nocol.o pj_qsfn.o pj_units.o proj_rouss.o \
+	emess.o nad_init.o PJ_chamb.o PJ_fahey.o PJ_hatano.o pj_log.o PJ_nsper.o pj_release.o PJ_urm5.o p_series.o \
+	nad_intr.o PJ_collg.o pj_fileapi.o PJ_healpix.o PJ_loxim.o PJ_nzmg.o PJ_robin.o PJ_urmfps.o rtodms.o \
+	gen_cheb.o PJ_comill.o PJ_fouc_s.o PJ_igh.o PJ_lsat.o PJ_ob_tran.o PJ_rpoly.o pj_utils.o \
+	geocent.o PJ_crast.o pj_fwd3d.o PJ_imw_p.o pj_malloc.o PJ_ocea.o PJ_vandg2.o vector1.o \
+	PJ_aea.o pj_ctx.o pj_fwd.o pj_init.o PJ_mbtfpp.o PJ_oea.o PJ_sch.o PJ_vandg4.o XDProj.o \
+	PJ_aeqd.o pj_datums.o PJ_gall.o pj_initcache.o PJ_mbtfpq.o PJ_omerc.o PJ_sconics.o PJ_vandg.o \
+	geodesic.o PJ_airy.o pj_datum_set.o pj_gauss.o pj_inv3d.o PJ_mbt_fps.o pj_open_lib.o PJ_somerc.o PJ_wag2.o \
+	PJ_aitoff.o PJ_denoy.o pj_gc_reader.o pj_inv.o PJ_merc.o PJ_ortho.o PJ_sterea.o PJ_wag3.o \
+	geod_interface.o pj_apply_gridshift.o pj_deriv.o PJ_isea.o PJ_mill.o pj_param.o PJ_stere.o PJ_wag7.o \
+	pj_apply_vgridshift.o PJ_eck1.o pj_geocent.o PJ_krovak.o PJ_misrsom.o PJ_patterson.o pj_strerrno.o PJ_wink1.o \
+	geod_set.o PJ_august.o PJ_eck2.o PJ_geos.o PJ_labrd.o pj_mlfn.o pj_phi2.o pj_strtod.o PJ_wink2.o \
+	pj_auth.o PJ_eck3.o PJ_gins8.o PJ_laea.o PJ_mod_ster.o PJ_poly.o PJ_sts.o pj_zpoly1.o \
+	jniproj.o PJ_bacon.o PJ_eck4.o PJ_gnom.o PJ_lagrng.o PJ_moll.o pj_pr_list.o PJ_tcc.o pj_list.o
+
+OBJS = $(OBJS_MAIN) $(OBJS_PROJ)
+# main() 이 있는 소스 제외
+# multistresstest.o test228.o  pj_run_selftests.o pj_generic_selftest.o geodtest.o cs2cs.o nad2bin.o proj.o geod.o 
+
+# 안쓰는 소스 제외
+#  
+
+# objes 파일 이용해서 실행파일 만들기, 라이브러리 있는 폴더
+all:$(OBJS)
+	$(CC) -o ./XDConvertImage $(OBJS) $(LDLIBS)
+clean:
+	rm $(INC_ROOT)/*.o 
+################################
+## OBJS_MAIN
+################################
+XDConvertImage.o:$(INC_ROOT)/XDConvertImage.cpp
+		$(COMPLGCC)
+common.o:$(INC_ROOT)/common.cpp
+		$(COMPLGCC)
+
+
+################################
+## OBJS_PROJ
+################################
+aasincos.o:$(INC_PROJ)/aasincos.c
+		$(COMPLGCC)
+#multistresstest.o:$(INC_PROJ)/multistresstest.c
+#		$(COMPLGCC)
+PJ_calcofi.o:$(INC_PROJ)/PJ_calcofi.c
+		$(COMPLGCC)
+PJ_eck5.o:$(INC_PROJ)/PJ_eck5.c
+		$(COMPLGCC)
+PJ_geos.o:$(INC_PROJ)/PJ_geos.c
+		$(COMPLGCC)
+pj_inv.o:$(INC_PROJ)/pj_inv.c
+		$(COMPLGCC)
+PJ_mbtfpq.o:$(INC_PROJ)/PJ_mbtfpq.c
+		$(COMPLGCC)
+PJ_ob_tran.o:$(INC_PROJ)/PJ_ob_tran.c
+		$(COMPLGCC)
+pj_qsfn.o:$(INC_PROJ)/pj_qsfn.c
+		$(COMPLGCC)
+PJ_tpeqd.o:$(INC_PROJ)/PJ_tpeqd.c
+		$(COMPLGCC)
+proj_etmerc.o:$(INC_PROJ)/proj_etmerc.c
+		$(COMPLGCC)
+adjlon.o:$(INC_PROJ)/adjlon.c
+		$(COMPLGCC)
+#nad2bin.o:$(INC_PROJ)/nad2bin.c
+#		$(COMPLGCC)
+PJ_cass.o:$(INC_PROJ)/PJ_cass.c
+		$(COMPLGCC)
+pj_ellps.o:$(INC_PROJ)/pj_ellps.c
+		$(COMPLGCC)
+PJ_gins8.o:$(INC_PROJ)/PJ_gins8.c
+		$(COMPLGCC)
+PJ_isea.o:$(INC_PROJ)/PJ_isea.c
+		$(COMPLGCC)
+PJ_mbt_fps.o:$(INC_PROJ)/PJ_mbt_fps.c
+		$(COMPLGCC)
+PJ_ocea.o:$(INC_PROJ)/PJ_ocea.c
+		$(COMPLGCC)
+pj_release.o:$(INC_PROJ)/pj_release.c
+		$(COMPLGCC)
+pj_transform.o:$(INC_PROJ)/pj_transform.c
+		$(COMPLGCC)
+proj_mdist.o:$(INC_PROJ)/proj_mdist.c
+		$(COMPLGCC)
+bch2bps.o:$(INC_PROJ)/bch2bps.c
+		$(COMPLGCC)
+nad_cvt.o:$(INC_PROJ)/nad_cvt.c
+		$(COMPLGCC)
+PJ_cc.o:$(INC_PROJ)/PJ_cc.c
+		$(COMPLGCC)
+pj_ell_set.o:$(INC_PROJ)/pj_ell_set.c
+		$(COMPLGCC)
+PJ_gnom.o:$(INC_PROJ)/PJ_gnom.c
+		$(COMPLGCC)
+PJ_krovak.o:$(INC_PROJ)/PJ_krovak.c
+		$(COMPLGCC)
+PJ_merc.o:$(INC_PROJ)/PJ_merc.c
+		$(COMPLGCC)
+PJ_oea.o:$(INC_PROJ)/PJ_oea.c
+		$(COMPLGCC)
+PJ_robin.o:$(INC_PROJ)/PJ_robin.c
+		$(COMPLGCC)
+pj_tsfn.o:$(INC_PROJ)/pj_tsfn.c
+		$(COMPLGCC)
+proj_rouss.o:$(INC_PROJ)/proj_rouss.c
+		$(COMPLGCC)
+bchgen.o:$(INC_PROJ)/bchgen.c
+		$(COMPLGCC)
+nad_init.o:$(INC_PROJ)/nad_init.c
+		$(COMPLGCC)
+PJ_cea.o:$(INC_PROJ)/PJ_cea.c
+		$(COMPLGCC)
+PJ_eqc.o:$(INC_PROJ)/PJ_eqc.c
+		$(COMPLGCC)
+PJ_gn_sinu.o:$(INC_PROJ)/PJ_gn_sinu.c
+		$(COMPLGCC)
+PJ_labrd.o:$(INC_PROJ)/PJ_labrd.c
+		$(COMPLGCC)
+PJ_mill.o:$(INC_PROJ)/PJ_mill.c
+		$(COMPLGCC)
+PJ_omerc.o:$(INC_PROJ)/PJ_omerc.c
+		$(COMPLGCC)
+PJ_rpoly.o:$(INC_PROJ)/PJ_rpoly.c
+		$(COMPLGCC)
+pj_units.o:$(INC_PROJ)/pj_units.c
+		$(COMPLGCC)
+p_series.o:$(INC_PROJ)/p_series.c
+		$(COMPLGCC)
+biveval.o:$(INC_PROJ)/biveval.c
+		$(COMPLGCC)
+nad_intr.o:$(INC_PROJ)/nad_intr.c
+		$(COMPLGCC)
+PJ_chamb.o:$(INC_PROJ)/PJ_chamb.c
+		$(COMPLGCC)
+PJ_eqdc.o:$(INC_PROJ)/PJ_eqdc.c
+		$(COMPLGCC)
+PJ_goode.o:$(INC_PROJ)/PJ_goode.c
+		$(COMPLGCC)
+PJ_laea.o:$(INC_PROJ)/PJ_laea.c
+		$(COMPLGCC)
+PJ_misrsom.o:$(INC_PROJ)/PJ_misrsom.c
+		$(COMPLGCC)
+pj_open_lib.o:$(INC_PROJ)/pj_open_lib.c
+		$(COMPLGCC)
+#pj_run_selftests.o:$(INC_PROJ)/pj_run_selftests.c
+#		$(COMPLGCC)
+PJ_urm5.o:$(INC_PROJ)/PJ_urm5.c
+		$(COMPLGCC)
+rtodms.o:$(INC_PROJ)/rtodms.c
+		$(COMPLGCC)
+#cs2cs.o:$(INC_PROJ)/cs2cs.c
+#		$(COMPLGCC)
+PJ_aea.o:$(INC_PROJ)/PJ_aea.c
+		$(COMPLGCC)
+PJ_collg.o:$(INC_PROJ)/PJ_collg.c
+		$(COMPLGCC)
+pj_errno.o:$(INC_PROJ)/pj_errno.c
+		$(COMPLGCC)
+pj_gridcatalog.o:$(INC_PROJ)/pj_gridcatalog.c
+		$(COMPLGCC)
+PJ_lagrng.o:$(INC_PROJ)/PJ_lagrng.c
+		$(COMPLGCC)
+pj_mlfn.o:$(INC_PROJ)/pj_mlfn.c
+		$(COMPLGCC)
+PJ_ortho.o:$(INC_PROJ)/PJ_ortho.c
+		$(COMPLGCC)
+PJ_sch.o:$(INC_PROJ)/PJ_sch.c
+		$(COMPLGCC)
+PJ_urmfps.o:$(INC_PROJ)/PJ_urmfps.c
+		$(COMPLGCC)
+#test228.o:$(INC_PROJ)/test228.c
+#		$(COMPLGCC)
+dmstor.o:$(INC_PROJ)/dmstor.c
+		$(COMPLGCC)
+PJ_aeqd.o:$(INC_PROJ)/PJ_aeqd.c
+		$(COMPLGCC)
+PJ_comill.o:$(INC_PROJ)/PJ_comill.c
+		$(COMPLGCC)
+pj_factors.o:$(INC_PROJ)/pj_factors.c
+		$(COMPLGCC)
+pj_gridinfo.o:$(INC_PROJ)/pj_gridinfo.c
+		$(COMPLGCC)
+PJ_larr.o:$(INC_PROJ)/PJ_larr.c
+		$(COMPLGCC)
+PJ_mod_ster.o:$(INC_PROJ)/PJ_mod_ster.c
+		$(COMPLGCC)
+pj_param.o:$(INC_PROJ)/pj_param.c
+		$(COMPLGCC)
+PJ_sconics.o:$(INC_PROJ)/PJ_sconics.c
+		$(COMPLGCC)
+pj_utils.o:$(INC_PROJ)/pj_utils.c
+		$(COMPLGCC)
+vector1.o:$(INC_PROJ)/vector1.c
+		$(COMPLGCC)
+emess.o:$(INC_PROJ)/emess.c
+		$(COMPLGCC)
+PJ_airy.o:$(INC_PROJ)/PJ_airy.c
+		$(COMPLGCC)
+PJ_crast.o:$(INC_PROJ)/PJ_crast.c
+		$(COMPLGCC)
+PJ_fahey.o:$(INC_PROJ)/PJ_fahey.c
+		$(COMPLGCC)
+pj_gridlist.o:$(INC_PROJ)/pj_gridlist.c
+		$(COMPLGCC)
+PJ_lask.o:$(INC_PROJ)/PJ_lask.c
+		$(COMPLGCC)
+PJ_moll.o:$(INC_PROJ)/PJ_moll.c
+		$(COMPLGCC)
+PJ_patterson.o:$(INC_PROJ)/PJ_patterson.c
+		$(COMPLGCC)
+PJ_somerc.o:$(INC_PROJ)/PJ_somerc.c
+		$(COMPLGCC)
+PJ_vandg2.o:$(INC_PROJ)/PJ_vandg2.c
+		$(COMPLGCC)
+XDProj.o:$(INC_PROJ)/XDProj.c
+		$(COMPLGCC)
+gen_cheb.o:$(INC_PROJ)/gen_cheb.c
+		$(COMPLGCC)
+PJ_aitoff.o:$(INC_PROJ)/PJ_aitoff.c
+		$(COMPLGCC)
+pj_ctx.o:$(INC_PROJ)/pj_ctx.c
+		$(COMPLGCC)
+pj_fileapi.o:$(INC_PROJ)/pj_fileapi.c
+		$(COMPLGCC)
+PJ_gstmerc.o:$(INC_PROJ)/PJ_gstmerc.c
+		$(COMPLGCC)
+pj_latlong.o:$(INC_PROJ)/pj_latlong.c
+		$(COMPLGCC)
+pj_msfn.o:$(INC_PROJ)/pj_msfn.c
+		$(COMPLGCC)
+pj_phi2.o:$(INC_PROJ)/pj_phi2.c
+		$(COMPLGCC)
+PJ_sterea.o:$(INC_PROJ)/PJ_sterea.c
+		$(COMPLGCC)
+PJ_vandg4.o:$(INC_PROJ)/PJ_vandg4.c
+		$(COMPLGCC)
+geocent.o:$(INC_PROJ)/geocent.c
+		$(COMPLGCC)
+pj_apply_gridshift.o:$(INC_PROJ)/pj_apply_gridshift.c
+		$(COMPLGCC)
+pj_datums.o:$(INC_PROJ)/pj_datums.c
+		$(COMPLGCC)
+PJ_fouc_s.o:$(INC_PROJ)/PJ_fouc_s.c
+		$(COMPLGCC)
+PJ_hammer.o:$(INC_PROJ)/PJ_hammer.c
+		$(COMPLGCC)
+PJ_lcca.o:$(INC_PROJ)/PJ_lcca.c
+		$(COMPLGCC)
+pj_mutex.o:$(INC_PROJ)/pj_mutex.c
+		$(COMPLGCC)
+PJ_poly.o:$(INC_PROJ)/PJ_poly.c
+		$(COMPLGCC)
+PJ_stere.o:$(INC_PROJ)/PJ_stere.c
+		$(COMPLGCC)
+PJ_vandg.o:$(INC_PROJ)/PJ_vandg.c
+		$(COMPLGCC)
+#geod.o:$(INC_PROJ)/geod.c
+#		$(COMPLGCC)
+pj_apply_vgridshift.o:$(INC_PROJ)/pj_apply_vgridshift.c
+		$(COMPLGCC)
+pj_datum_set.o:$(INC_PROJ)/pj_datum_set.c
+		$(COMPLGCC)
+pj_fwd3d.o:$(INC_PROJ)/pj_fwd3d.c
+		$(COMPLGCC)
+PJ_hatano.o:$(INC_PROJ)/PJ_hatano.c
+		$(COMPLGCC)
+PJ_lcc.o:$(INC_PROJ)/PJ_lcc.c
+		$(COMPLGCC)
+PJ_natearth2.o:$(INC_PROJ)/PJ_natearth2.c
+		$(COMPLGCC)
+pj_pr_list.o:$(INC_PROJ)/pj_pr_list.c
+		$(COMPLGCC)
+pj_strerrno.o:$(INC_PROJ)/pj_strerrno.c
+		$(COMPLGCC)
+PJ_wag2.o:$(INC_PROJ)/PJ_wag2.c
+		$(COMPLGCC)
+geodesic.o:$(INC_PROJ)/geodesic.c
+		$(COMPLGCC)
+PJ_august.o:$(INC_PROJ)/PJ_august.c
+		$(COMPLGCC)
+PJ_denoy.o:$(INC_PROJ)/PJ_denoy.c
+		$(COMPLGCC)
+pj_fwd.o:$(INC_PROJ)/pj_fwd.c
+		$(COMPLGCC)
+PJ_healpix.o:$(INC_PROJ)/PJ_healpix.c
+		$(COMPLGCC)
+#pj_list.o:$(INC_PROJ)/pj_list.c
+#		$(COMPLGCC)
+PJ_natearth.o:$(INC_PROJ)/PJ_natearth.c
+		$(COMPLGCC)
+PJ_putp2.o:$(INC_PROJ)/PJ_putp2.c
+		$(COMPLGCC)
+pj_strtod.o:$(INC_PROJ)/pj_strtod.c
+		$(COMPLGCC)
+PJ_wag3.o:$(INC_PROJ)/PJ_wag3.c
+		$(COMPLGCC)
+geod_interface.o:$(INC_PROJ)/geod_interface.c
+		$(COMPLGCC)
+pj_auth.o:$(INC_PROJ)/pj_auth.c
+		$(COMPLGCC)
+pj_deriv.o:$(INC_PROJ)/pj_deriv.c
+		$(COMPLGCC)
+PJ_gall.o:$(INC_PROJ)/PJ_gall.c
+		$(COMPLGCC)
+PJ_igh.o:$(INC_PROJ)/PJ_igh.c
+		$(COMPLGCC)
+pj_log.o:$(INC_PROJ)/pj_log.c
+		$(COMPLGCC)
+PJ_nell.o:$(INC_PROJ)/PJ_nell.c
+		$(COMPLGCC)
+PJ_putp3.o:$(INC_PROJ)/PJ_putp3.c
+		$(COMPLGCC)
+PJ_sts.o:$(INC_PROJ)/PJ_sts.c
+		$(COMPLGCC)
+PJ_wag7.o:$(INC_PROJ)/PJ_wag7.c
+		$(COMPLGCC)
+geod_set.o:$(INC_PROJ)/geod_set.c
+		$(COMPLGCC)
+PJ_bacon.o:$(INC_PROJ)/PJ_bacon.c
+		$(COMPLGCC)
+PJ_eck1.o:$(INC_PROJ)/PJ_eck1.c
+		$(COMPLGCC)
+pj_gauss.o:$(INC_PROJ)/pj_gauss.c
+		$(COMPLGCC)
+PJ_imw_p.o:$(INC_PROJ)/PJ_imw_p.c
+		$(COMPLGCC)
+PJ_loxim.o:$(INC_PROJ)/PJ_loxim.c
+		$(COMPLGCC)
+PJ_nell_h.o:$(INC_PROJ)/PJ_nell_h.c
+		$(COMPLGCC)
+PJ_putp4p.o:$(INC_PROJ)/PJ_putp4p.c
+		$(COMPLGCC)
+PJ_tcc.o:$(INC_PROJ)/PJ_tcc.c
+		$(COMPLGCC)
+PJ_wink1.o:$(INC_PROJ)/PJ_wink1.c
+		$(COMPLGCC)
+#geodtest.o:$(INC_PROJ)/geodtest.c
+#		$(COMPLGCC)
+PJ_bipc.o:$(INC_PROJ)/PJ_bipc.c
+		$(COMPLGCC)
+PJ_eck2.o:$(INC_PROJ)/PJ_eck2.c
+		$(COMPLGCC)
+pj_gc_reader.o:$(INC_PROJ)/pj_gc_reader.c
+		$(COMPLGCC)
+pj_init.o:$(INC_PROJ)/pj_init.c
+		$(COMPLGCC)
+PJ_lsat.o:$(INC_PROJ)/PJ_lsat.c
+		$(COMPLGCC)
+PJ_nocol.o:$(INC_PROJ)/PJ_nocol.c
+		$(COMPLGCC)
+PJ_putp5.o:$(INC_PROJ)/PJ_putp5.c
+		$(COMPLGCC)
+PJ_tcea.o:$(INC_PROJ)/PJ_tcea.c
+		$(COMPLGCC)
+PJ_wink2.o:$(INC_PROJ)/PJ_wink2.c
+		$(COMPLGCC)
+jniproj.o:$(INC_PROJ)/jniproj.c
+		$(COMPLGCC)
+PJ_boggs.o:$(INC_PROJ)/PJ_boggs.c
+		$(COMPLGCC)
+PJ_eck3.o:$(INC_PROJ)/PJ_eck3.c
+		$(COMPLGCC)
+#pj_generic_selftest.o:$(INC_PROJ)/pj_generic_selftest.c
+#		$(COMPLGCC)
+pj_initcache.o:$(INC_PROJ)/pj_initcache.c
+		$(COMPLGCC)
+pj_malloc.o:$(INC_PROJ)/pj_malloc.c
+		$(COMPLGCC)
+PJ_nsper.o:$(INC_PROJ)/PJ_nsper.c
+		$(COMPLGCC)
+PJ_putp6.o:$(INC_PROJ)/PJ_putp6.c
+		$(COMPLGCC)
+PJ_times.o:$(INC_PROJ)/PJ_times.c
+		$(COMPLGCC)
+pj_zpoly1.o:$(INC_PROJ)/pj_zpoly1.c
+		$(COMPLGCC)
+mk_cheby.o:$(INC_PROJ)/mk_cheby.c
+		$(COMPLGCC)
+PJ_bonne.o:$(INC_PROJ)/PJ_bonne.c
+		$(COMPLGCC)
+PJ_eck4.o:$(INC_PROJ)/PJ_eck4.c
+		$(COMPLGCC)
+pj_geocent.o:$(INC_PROJ)/pj_geocent.c
+		$(COMPLGCC)
+pj_inv3d.o:$(INC_PROJ)/pj_inv3d.c
+		$(COMPLGCC)
+PJ_mbtfpp.o:$(INC_PROJ)/PJ_mbtfpp.c
+		$(COMPLGCC)
+PJ_nzmg.o:$(INC_PROJ)/PJ_nzmg.c
+		$(COMPLGCC)
+PJ_qsc.o:$(INC_PROJ)/PJ_qsc.c
+		$(COMPLGCC)
+PJ_tmerc.o:$(INC_PROJ)/PJ_tmerc.c
+		$(COMPLGCC)
+#proj.o:$(INC_PROJ)/proj.c
+#		$(COMPLGCC)
